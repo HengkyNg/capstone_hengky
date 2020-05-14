@@ -128,16 +128,18 @@ def index():
     result3 = str(figdata_png)[2:-1]
     
     ## Buatlah sebuah plot yang menampilkan insight di dalam data
-    ## Bar plot menampilkan jumlah app yang gratis (Free) atau berbayar (Paid)
-    cat_order2 = df2.groupby('Type').agg({
-        'Type': 'count'
-    }).rename({'Type':'Total'}, axis=1).sort_values('Total',ascending=False).head().reset_index()
-    X = cat_order2['Type']
-    Y = cat_order2['Total']
+    ## Bar plot menampilkan 5 Genre Game yang paling banyak dipublikasikan di playstore
+    game_genre = df2[df2['Category']=='GAME'].groupby('Genres').agg({
+        'Genres' : 'count' 
+    }).rename({'Genres':'Total'}, axis=1).sort_values('Total',ascending=False).head(5).reset_index()
+    X = game_genre['Genres']
+    Y = game_genre['Total']
+    
     fig = plt.figure(figsize=(5,5))
     fig.add_subplot()
-    plt.bar(x=X,height=Y,width=0.6,align='center')
-    plt.savefig('bar_type2.png',bbox_inches="tight")
+    plt.bar(x=X,height=Y)
+    plt.ylabel('Frequency')
+    plt.savefig('bar_game2.png',bbox_inches="tight")
     
     figfile = BytesIO()
     plt.savefig(figfile, format='png')
